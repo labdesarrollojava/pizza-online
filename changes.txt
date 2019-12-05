@@ -1,0 +1,36 @@
+spring
+    permisos
+        SecurityConfiguarion.java
+
+        CustomerResource.java
+        InvoiceResource.java
+        OrderItemResource.java
+        PizzaCategoryResource.java
+        PizzaOrderResource.java
+        PizzaResource.java
+        ShipmentResource.java                
+    funcionalidad
+        InvoiceRepository.java
+        OrderItemRepository.java
+        PizzaOrderRepository.java
+        ShipmentRepository.java
+
+        InvoiceService.java
+        OrderItemService.java
+        PizzaOrderService.java
+        ShipmentService.java        
+
+angular
+    funcionalidad    
+        home.component.html
+        pizza.component.html
+        pizza.component.ts
+        footer.component.html
+
+    permisos
+        customer.component.html
+        invoice.component.html
+        order-item.component.html
+        pizza-category.component.html
+        pizza-order.component.html
+        shipment.component.html        
