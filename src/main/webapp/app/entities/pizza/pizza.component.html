@@ -1,0 +1,81 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="appApp.pizza.home.title">Pizzas</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-pizza" [routerLink]="['/pizza/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="appApp.pizza.home.createLabel">
+            Create new Pizza
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="pizzas">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="name"><span jhiTranslate="appApp.pizza.name">Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description"><span jhiTranslate="appApp.pizza.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="price"><span jhiTranslate="appApp.pizza.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="pizzatype"><span jhiTranslate="appApp.pizza.pizzatype">Pizzatype</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="image"><span jhiTranslate="appApp.pizza.image">Image</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="pizzaCategory.name"><span jhiTranslate="appApp.pizza.pizzaCategory">Pizza Category</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let pizza of pizzas ;trackBy: trackId">
+                <td><a [routerLink]="['/pizza', pizza.id, 'view' ]">{{pizza.id}}</a></td>
+                <td>{{pizza.name}}</td>
+                <td>{{pizza.description}}</td>
+                <td>{{pizza.price}}</td>
+                <td jhiTranslate="{{'appApp.PizzaType.' + pizza.pizzatype}}">{{pizza.pizzatype}}</td>
+                <td>
+                    <a *ngIf="pizza.image" (click)="openFile(pizza.imageContentType, pizza.image)">
+                        <img [src]="'data:' + pizza.imageContentType + ';base64,' + pizza.image" style="max-height: 30px;" alt="pizza image"/>
+                    </a>
+                    <span *ngIf="pizza.image">{{pizza.imageContentType}}, {{byteSize(pizza.image)}}</span>
+                </td>
+                <td>
+                    <div *ngIf="pizza.pizzaCategory">
+                        <a [routerLink]="['../pizza-category', pizza.pizzaCategory?.id, 'view' ]" >{{pizza.pizzaCategory?.name}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/pizza', pizza.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/pizza', pizza.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'pizza/'+ pizza.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="pizzas && pizzas.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>
